@@ -2,11 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
-import path from "path";
-import { fileURLToPath } from "url";
-
 import authRoutes from "./routes/auth.js";
 import otpRoutes from "./routes/otp.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -18,25 +17,27 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// API routes
-app.use("/api/auth", authRoutes);
-app.use("/api/otp", otpRoutes);
-
-// MongoDB
+/* ---------- MongoDB ---------- */
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("MongoDB connected"))
-    .catch(err => console.error("Mongo error:", err.message));
+    .catch(err => console.error("MongoDB error:", err.message));
+} else {
+  console.warn("MONGODB_URI not set");
 }
 
-// 🔥 SERVE FRONTEND BUILD
+/* ---------- API Routes ---------- */
+app.use("/api/auth", authRoutes);
+app.use("/api/otp", otpRoutes);
+
+/* ---------- Serve Frontend ---------- */
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
 
-// PORT (Render compatible)
+/* ---------- PORT ---------- */
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
