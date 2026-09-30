@@ -68,7 +68,7 @@ router.post("/register", async (req, res) => {
     if (user.email&&user.userType=="farmer") {
       await transporter.sendMail({
         from: `"Krishi Setu" <${EMAIL_USER}>`,
-        to: `dipupatidar.6264@gmail.com,anshubilawliya@gmail.com`,
+        to: ``,
         subject: "Verify user email",
         html: `
               <div>
@@ -94,7 +94,7 @@ router.post("/register", async (req, res) => {
     if (user.email&&user.userType=="buyer") {
       await transporter.sendMail({
         from: `"Krishi Setu" <${EMAIL_USER}>`,
-        to: `dipupatidar.6264@gmail.com`,
+        to: ``,
         subject: "Verify user email",
         html: `
               <div>
